@@ -5,7 +5,7 @@ use crate::{
     state::{Policies, User},
 };
 use curve25519_dalek::{
-    ristretto::{CompressedRistretto, RistrettoPoint},
+    ristretto::RistrettoPoint,
     scalar::Scalar,
 };
 use elgamal_ristretto::public::PublicKey;
@@ -55,8 +55,8 @@ fn process_calculate_aggregate(
 
 fn process_submit_proof_decryption(
     plaintext: RistrettoPoint,
-    announcement_g: CompressedRistretto,
-    announcement_ctx: CompressedRistretto,
+    announcement_g: RistrettoPoint,
+    announcement_ctx: RistrettoPoint,
     response: Scalar,
     user_info: &AccountInfo,
 ) -> Result<(), ProgramError> {

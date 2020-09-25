@@ -3,7 +3,7 @@
 use borsh::{BorshDeserialize, BorshSerialize};
 use curve25519_dalek::{
     constants::RISTRETTO_BASEPOINT_POINT,
-    ristretto::{CompressedRistretto, RistrettoPoint},
+    ristretto::RistrettoPoint,
     scalar::Scalar,
     traits::Identity,
 };
@@ -115,19 +115,19 @@ impl User {
         public_key: RistrettoPoint,
         policies: &[Scalar],
     ) -> bool {
-        let ciphertext = inner_product(ciphertexts, &policies);
-        self.encrypted_aggregate = EncryptedAggregate {
-            ciphertext,
-            public_key,
-        };
+        //let ciphertext = inner_product(ciphertexts, &policies);
+        //self.encrypted_aggregate = EncryptedAggregate {
+        //    ciphertext,
+        //    public_key,
+        //};
         true
     }
 
     pub fn submit_proof_decryption(
         &mut self,
         plaintext: RistrettoPoint,
-        announcement_g: CompressedRistretto,
-        announcement_ctx: CompressedRistretto,
+        announcement_g: RistrettoPoint,
+        announcement_ctx: RistrettoPoint,
         response: Scalar,
     ) -> bool {
         let client_pk = PublicKey::from(self.fetch_public_key());

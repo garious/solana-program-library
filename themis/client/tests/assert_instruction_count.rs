@@ -232,38 +232,38 @@ fn assert_instruction_count() {
     let calculate_aggregate_count =
         run_program(&program_id, &parameter_accounts[..], &instruction_data).unwrap();
 
-    // Submit proof decryption
-    let user = User::deserialize(&user_account.try_borrow().unwrap().data).unwrap();
-    let encrypted_point = user.fetch_encrypted_aggregate();
-    let ciphertext = Ciphertext {
-        points: encrypted_point,
-        pk,
-    };
+    //// Submit proof decryption
+    //let user = User::deserialize(&user_account.try_borrow().unwrap().data).unwrap();
+    //let encrypted_point = user.fetch_encrypted_aggregate();
+    //let ciphertext = Ciphertext {
+    //    points: encrypted_point,
+    //    pk,
+    //};
 
-    let decrypted_aggregate = sk.decrypt(&ciphertext);
-    let scalar_aggregate = recover_scalar(decrypted_aggregate, 16);
-    let expected_scalar_aggregate = 3u8.into();
-    assert_eq!(scalar_aggregate, expected_scalar_aggregate);
+    //let decrypted_aggregate = sk.decrypt(&ciphertext);
+    //let scalar_aggregate = recover_scalar(decrypted_aggregate, 16);
+    //let expected_scalar_aggregate = 3u8.into();
+    //assert_eq!(scalar_aggregate, expected_scalar_aggregate);
 
-    let ((announcement_g, announcement_ctx), response) =
-        sk.prove_correct_decryption_no_Merlin(&ciphertext, &decrypted_aggregate);
+    //let ((announcement_g, announcement_ctx), response) =
+    //    sk.prove_correct_decryption_no_Merlin(&ciphertext, &decrypted_aggregate);
 
-    let instruction_data = ThemisInstruction::SubmitProofDecryption {
-        plaintext: decrypted_aggregate,
-        announcement_g,
-        announcement_ctx,
-        response,
-    }
-    .serialize()
-    .unwrap();
-    let parameter_accounts = vec![KeyedAccount::new(&user_key, true, &user_account)];
-    let proof_decryption_count =
-        run_program(&program_id, &parameter_accounts[..], &instruction_data).unwrap();
+    //let instruction_data = ThemisInstruction::SubmitProofDecryption {
+    //    plaintext: decrypted_aggregate,
+    //    announcement_g,
+    //    announcement_ctx,
+    //    response,
+    //}
+    //.serialize()
+    //.unwrap();
+    //let parameter_accounts = vec![KeyedAccount::new(&user_key, true, &user_account)];
+    //let proof_decryption_count =
+    //    run_program(&program_id, &parameter_accounts[..], &instruction_data).unwrap();
 
     const BASELINE_NEW_POLICIES_COUNT: u64 = 80_000; // last known 75796
     const BASELINE_INITIALIZE_USER_COUNT: u64 = 22_000; // last known 17090
     const BASELINE_CALCULATE_AGGREGATE_COUNT: u64 = 15_000_000; // last known 13,051,825
-    const BASELINE_PROOF_DECRYPTION_COUNT: u64 = 15_000_000; // last known 14,725,657
+    //const BASELINE_PROOF_DECRYPTION_COUNT: u64 = 15_000_000; // last known 14,725,657
 
     println!("BPF instructions executed");
     println!(
@@ -278,15 +278,15 @@ fn assert_instruction_count() {
         "  CalculateAggregate:    {:?} ({:?})",
         calculate_aggregate_count, BASELINE_CALCULATE_AGGREGATE_COUNT
     );
-    println!(
-        "  SubmitProofDecryption: {:?} ({:?})",
-        proof_decryption_count, BASELINE_PROOF_DECRYPTION_COUNT
-    );
+    //println!(
+    //    "  SubmitProofDecryption: {:?} ({:?})",
+    //    proof_decryption_count, BASELINE_PROOF_DECRYPTION_COUNT
+    //);
 
     assert!(initialize_policies_count <= BASELINE_NEW_POLICIES_COUNT);
     assert!(initialize_user_count <= BASELINE_INITIALIZE_USER_COUNT);
     assert!(calculate_aggregate_count <= BASELINE_CALCULATE_AGGREGATE_COUNT);
-    assert!(proof_decryption_count <= BASELINE_PROOF_DECRYPTION_COUNT);
+    //assert!(proof_decryption_count <= BASELINE_PROOF_DECRYPTION_COUNT);
 }
 
 // Mock InvokeContext
