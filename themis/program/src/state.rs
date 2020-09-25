@@ -115,11 +115,11 @@ impl User {
         public_key: RistrettoPoint,
         policies: &[Scalar],
     ) -> bool {
-        //let ciphertext = inner_product(ciphertexts, &policies);
-        //self.encrypted_aggregate = EncryptedAggregate {
-        //    ciphertext,
-        //    public_key,
-        //};
+        let ciphertext = inner_product(ciphertexts, &policies);
+        self.encrypted_aggregate = EncryptedAggregate {
+            ciphertext,
+            public_key,
+        };
         true
     }
 
